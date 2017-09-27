@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>jQuery(제이쿼리) 강좌와 예제모음 : 제이쿼리로 이미지 동적생하고 masonry 로 정렬해 보기 (갤러리 형태 만들기)</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+
+<div style="text-align:center; margin:0 0 100px 0; background:#555; line-height:80px;">
+	<a style="color:#fff; font-weight:bold; font-family:tahoma; font-size:20pt;" href="http://ktsmemo.cafe24.com/s/jquery/30" target="_blank">http://ktsmemo.cafe24.com/s/jquery/30</a>
+</div>
+
+
+<!-- 예제 시작 -->
+
+<style type="text/css">
+
+    .wrap img {
+        margin: 3px;
+        visibility: hidden;
+    } /* 이미지에 margin 3px 설정 */
+
+</style>
+
+<div class="wrap"></div>
+<!-- 위 div 안에 이미지를 생성합니다 -->
+
+<script type="text/javascript">
+
+	function zeroFill(sVal, nCnt){ // zeroFill(값, 채울갯수)
+		var zero = '';
+		var ret  = sVal.toString();
+		if(nCnt > 100) return sVal; // 100개 이상 채울 수 없음;;
+		for(var i=0 ; i < nCnt-ret.length ; i++){
+			zero += '0';
+		}
+		return zero + ret;
+	}
+
+	// 루프를 돌며 30개의 이미지를 생성
+	for(var i=1; i<=30; i++){
+		// append 메소드를 사용해서 이미지 추가
+		$('.wrap').append('<img src="http://biketago.cdn2.cafe24.com/bg_thumb/bg_' + zeroFill(i, 2) + '.jpg">');
+	}
+
+	var imgElements = document.getElementsByTagName('img');
+
+</script>
+
+<div class="oskim"><img id="reddot"/></div>
+<script type="text/javascript">
+    for (var i = 1; i <= 30; i++) {
+        // append 메소드를 사용해서 이미지 추가
+        //$('.oskim').append('<img src="http://biketago.cdn2.cafe24.com/bg_thumb/bg_' + zeroFill(i, 2) + '.jpg">');
+        var img = imgElements[i];
+        document.body.appendChild(img);
+
+        //document.getElementById('reddot').setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==');
+        //$("img#reddot").attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==');
+    }
+</script>
+<!-- 예제 종료 -->
+
+</body>
+</html>
+
+
+var img1 = new Image(); // HTML5 Constructor
+img1.src = 'image1.png';
+img1.alt = 'alt';
+document.body.appendChild(img1);
+
+var img2 = document.createElement('img'); // use DOM HTMLImageElement
+img2.src = 'image2.jpg';
+img2.alt = 'alt text';
+document.body.appendChild(img2);
+
+// using first image in the document
+alert(document.images[0].src);
+
+https://developer.mozilla.org/ko/docs/Web/API/HTMLImageElement
