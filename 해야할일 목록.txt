@@ -1,0 +1,215 @@
+
+1. 02/26 분석시스템 
+   - 합성탭/하단 사이트영상/산출물 대기수상체 영상의 하단 Height -> Elevation 명칭수정
+   - 사이트탭/ 480km, PPI0 고도표시 (사이트 정보 ini 데이터에서 땡겨와야 할듯 ㅠㅠ)
+		->siteCtrl.js
+			//자료형태/고도각 읽어오기
+			function getElevaionList(dtype, pcnt)
+			function siteElevation(dtype, pcnt)
+		->siteElevation() 함수 에서 PPI0/480km 일때도 Ajax - /site/selectElevationSuccessListAjax.do 호출 하도록 설정
+			->UsSiteController.java 에서 PPI0/480km 일때도 1개 짜리 siteOptList를 만든다. -> 자료형태 항목도 있어야 함
+				->혹, siteCtrl.js에서 html 동적 생성루틴이 없다면 추가
+					-> 혹, 고도각 리스트 한개짜리 Hidden 처리 해도 됨
+						-> 고도값 있으면, 이전에 수정한 코드로 '고도'표시 되도록 함
+		
+   - GIS탭 정보창 폭 가장긴것으로 맞춤
+   - CAPPI 고도 삭제 -> CAPPI 원래 특정지정 고도 임 (고도각 의미 없음)
+   
+2. 자료송신 목록 최신화
+3. 03/02 분석시스템 - 수원, 예천, 원주, 중원, 군산U, 용인U, 인천공항 데이터 날짜 sync
+   - /DATA/INPUT/UFV/201803/05 *RKJK*(군산), *RKSG*(용인), *IIA* -> 시간이 랜덤함
+   - 상기 사이트는 1타임씩 최종 데이터시간이 늦게 나옴 (실제 디스크 및 로그에는 1타임 뒤에것 있음!!)
+4. 03/05 합성 480 "Now" 오작동, 한중일 지연 표시
+4. 03/05 합성 480 "Now" 오작동, 한중일 지연 표시
+5. 사이트 산출물 480 선택시 시간이 거의 모든 사이트에 대해 4분씩 늦게 나오는것 문의(확인)필요!
+
+6. 03/07 자료송신 목록화된것 현업 적용
+	- 기존 ftp 안되는것 주석하고, 멘트 넣기 (노주임 작업한것 참조)
+	- ftp 전송항목을 AFD로 이동할것 (이때, 영향도 평가 잘 할것 -> 실무적용 전 작업내용 정리하여 컨펌 (SK,JW,MH))
+	- AFD 전송 부적절한것 확인 (*.png, *.uf 등) -> 역시 영향도 평가
+	
+*7. 03/09 표출시스템의 낙뢰/지역낙뢰, 누적분포도 분석시스템으로 이관 -> 일단 분석시스템에 SSO 끄고, 연결 시킴
+	- UI는 네모박스 VAD 처럼 할것 (Frame 단위로 작업하여 COMIS에 쉽게 임베디드 되게)
+	-> 지역별 낙뢰표출을 위한 행정구역 정보와 Fill 하는 기능(API), 공간연산 등등 확인
+	   (맵서버가 달라, basin 행정구역 폴리곤정보가 차이가 있을 수 있음)
+	-> 육지/해상을 구분하기 위한 정보 확인
+	-> CGI도 추가로 만들어야 함 (지역별 분포도 등 영상이미지 생성용)
+	-> 누적분포 통계정보는 DB 또는 OpenAPI로 있는듯, 최소기능은 현재 분석시스템 있음
+	-> 표출시스템 셧다운 하면, 기존 CGI 와 Map서버도 종료할 예정? (왜냐면 CGI 바로 사용 시도)		
+	
+	낙뢰 분포 : /srv/webapps/c_proj/lgt/make_lgt_distribution_zoom
+	지역별 낙뢰 : /srv/webapps/c_proj/lgt/make_lgt_basin_image	
+	
+	낙뢰 분포 옵션 폭 줄임
+	
+8. 03.21 HSR 표출추가
+	-> 지도API와 CGI가 핵심 -> 지도API 매뉴얼 문서 및 flash 소스 + a (flash 빌드툴)
+	-> CGI HSR 합성까지 하나? -> 검토해 봐야 한다.
+	
+	->comis 소스 : /rdr/www, rdr_cmp_hsr.c (합성,좌표계산)
+	
+	->사용데이터
+	분석시스템  /DATA/OUTPUT/BIN/CSPH/201803/09/RDR_CSQCZ_PP00M_201803091530.h5
+				/DATA/OUTPUT/BIN/ZSQP/201804/05/RDR_CSQCZ_PP00M_201804051500.bin.gz
+	COMIS /DATA/RDR/CMP/201804/02/RDR_CMP_HSR1_201804021425.bin.gz
+	->cgi 실제 요청
+	분석시스템 ?????
+	COMIS http://rdr.kma.go.kr/cgi-bin/rdr/nph-rdr_hsr_img?&tm=201804051445&cmp=HSR1&obs=ECHO&map=H1&color=C4&grid=2&legend=1&size=960&zoom_level=1&zoom_x=3000000&zoom_y=3000000&ZRa=200&ZRb=1.6&rand=051449
+
+=====================	
+comis	
+#define  RDR_NX   1152
+#define  RDR_NY   1440
+
+#define  RDR_SX   560
+#define  RDR_SY   840
+
+    fCompLU_lon = 120.45666;
+    fCompLU_lat = 40.160790;
+
+    fCompRL_lon = 132.13699;
+    fCompRL_lat = 30.726780;
+
+  /* OUT Map parameter */
+  map.Re  = RE*0.001;
+  map.grid  = 1.0;
+  map.slat1 = 30.0;
+  map.slat2 = 60.0;
+  map.olon  = 126.0;
+  map.olat  = 38.0;
+  map.xo  = 4.0 * 140.0 / map.grid;
+  map.yo  = 4.0 * 210.0 / map.grid;
+  map.first = 0;
+
+  /* IN map parameter */
+  rdr.Re  = RE*0.001;
+  rdr.grid  = 0.5;
+  rdr.slon  = stn_lon;
+  rdr.slat  = stn_lat;
+  rdr.olon  = stn_lon;
+  rdr.olat  = stn_lat;
+  rdr.xo  = 1000.5;
+  rdr.yo  = 1000.5;
+  rdr.first = 0;
+  =======================
+분석시스템
+    g_comp.m_fCompLon       = COMP_ORIGIN_LON;
+    g_comp.m_fCompLat       = COMP_ORIGIN_LAT;
+    g_comp.m_fCompGridKm    = 1.0;
+    g_comp.m_nCompXdim      = COMP_240KM_XDIM;
+    g_comp.m_nCompYdim      = COMP_240KM_YDIM;
+    g_comp.m_nCompXo        = COMP_240KM_XO;
+    g_comp.m_nCompYo        = COMP_240KM_YO;
+	
+#define COMP_ORIGIN_LON             126
+#define COMP_ORIGIN_LAT             38
+
+#define COMP_240KM_XO               400
+#define COMP_240KM_YO               800
+
+#define COMP_240KM_XDIM             960
+#define COMP_240KM_YDIM             1200
+
+#define COMP_LU_LON                 121.028351
+#define COMP_LU_LAT                 41.590557
+#define COMP_RL_LON                 131.863235
+#define COMP_RL_LAT                 30.506027
+
+분석시스템 에코표출 로직
+-main()
+	+fnGetFileData()
+		+fnFilename()
+		+fnBinaryCompDataSetting()
+		+fnGetCompData() <---- 실제 데이터 로딩 부분
+	+fnMakeCompImgData() : 261
+		+fnCgiGetMapInfo() #1
+		+fnCalcRadarValue()
+		+fnKmaPosToGisPos()	#2
+	+fnImgDataUnitSetting()
+	+fnCreateCompRealtimeImg()
+	
+	
+*9. 사이트탭 선택시, 관악산 디폴트 선택인데 '고도'가 표시 안됨. 어디 갔다가 와야 함
+	-> CAPPI를 디폴트 품질항목으로 지정하여, 자동 수정되어 버림
+
+*10. 03.26 사이트명, 순서 재정렬
+
+*11. 03.27 품질관리 항목 모두 FuzzyQC로 지정
+	- 항목표시되는 순서도 FuzzyQC가 제일 먼저 나오도록
+	- Chaff, ORPG QC 제거(라디오에서만 삭제)
+	- 산출물 디폴트는 CAPPI(1.5km)로 선택되게
+	
+12. 04.03 AWS 안나오는것 수정 (품질항목 FuzzyQC로 디폴트 지정으로 인해, 현재 NoQC만 나옴)
+	- PPI, CAPPI 등 전체 FuzzyQC 나오도록
+	
+*13. 04.04 레이더 영상 범례바 색상 변경
+*14. 04.05 합성 480km 자동갱신 안되는것 수정 (xml에 entry값이 아예 없었음)
+*15. 04.09 낙뢰안나오는것 (xml에 entry값이 아예 없었음)
+*16. 04.10 사이트 480km time sync 안되는것 
+
+*17. 04.23 낙뢰표시 (동그라미, 십자가 두께 크기 키우기) -> arc로 그릴것
+	/srv/kres/cgi_project/src/lgt/lgt_time_pow_gis_oskim
+	/srv/kres/cgi_project/cgi_common_oskim/libsrc/cgi_lgt
+*18. 04.23 황병산R 고도 값 맞지 않음 (합성>사이트영상(우하단), 산출물 Elevation과 deg값이 맞지 않음)
+	->/srv/kres/cgi_project/data/temp/site/NOQC에 고각정보 txt 파일생성 안됨, Click 할때 자료생성 인데 생성하지 않음
+*19. 04.24 낙뢰 옵션폭 ras.kma.go.kr 로 접근하면 오류남 (크롬 ok, 익스플로러 ng)
+*20. 04.25 표출의 '낙뢰 원시자료' "신포맷"으로 리스트업 하는것 새로 만들것 (신/구 구분은 데이터 날짜로 구분)
+	->'/radar/lgtraw.do?mnc=52&gcode=6'
+21. 05.04 낙뢰표시 깜빡이게
+22. 05.08 
+23. 대기수상체 색상표 변경
+백길호님의 말 (오후 3:35)
+/rdr/www/cgi-src/rdr/rdr_cmp_hci_img.c
+백길호님의 말 (오후 3:35)
+short rdr_hci_num(short ec)
+24. 05.14 분석시스템 낙뢰표출 5분단위로 (국사무관님)
+25. 낙뢰표출
+남경엽님의 말 (오후 4:44)
+확대: 마우스 휠 업, 축소: 마우스 휠 다운 | 지도 이동: 마우스 왼쪽 버튼 드래그
+김언식님의 말 (오후 4:45)
+남경엽님의 말 (오후 4:45)
+(확대) 마우스 휠 업, (축소) 마우스 휠 다운, (이동) 마우스 왼쪽 버튼 드래그
+남경엽님의 말 (오후 4:45)
+(확대) 마우스 휠 업, (축소) 마우스 휠 다운, (이동) 마우스 왼쪽 버튼 누리고 이동
+26. 05.25 낙뢰표출 DB 직접사용, 낙뢰위치 공간연산, index 밀리는것 확인
+-AWS 확인 -> FuzzyQC 설정시 에도 나오게, 대기수상체 고도 안나오는것(길호씨), 대기수상체 전체선택 수정한것 적용
+-문서작업
+27. 05.29 MAPLE 예보기술과 데이터로 변경작업
+ -> lib 변경으로, HSR 소스변경(~oskim, ~oskim2)과 머지할것!! (좌표기준점 같이 맞출것 -10,1020)
+28. 05.30 연직단면도 Shift 되어 보이는것 수정
+29. 06.04 예보기술과 MAPLE PPI, HSR, LGT등 8개 표출
+30. MAPLE
+	-등치선 좌표변환
+	-예측가이던스 안나오는것
+	-메뉴구성 (강수-10분, 강수-60분) -> 동적메뉴
+	-낙뢰 legend (확률prob, 빈도freq 틀림)
+	-낙뢰 에코색상 처리 (BAD, AREA)
+31. 센터홈페이지 예측변경(CGI)
+	
+
+
+***기상업무 강의 확인 (청내) ****
+
+
+===mid term
+1.기획팀 업무일지 웹사이트 만들기 (4월)
+2.웹사이트 계정 radar -> opweb 변경, 그리고 svn upload (3월?)
+3.사이트명 정렬을 위해 KR_OBS_STATION 테이블에 SITESORTEACH 추가로 인한, 관리자 페이지에서 사이트관리에 번호입력 추가필요
+
+===long term
+1. svn DST upload 누락분 체크
+2. svn 분석시스템 등 아직 upload 못한것 최종본 확인하여 올리기
+3. 낙뢰정보 개선 (a.알람기능, b.GIS관심지역 설정기능)
+
+===주기작업
+A.월간
+1.유지보수 시스템 완료사항 교차 확인 및 수정내역 작성, svn 업로드 확인
+2.소프트웨어 자료명세서 업데이트 확인
+
+===수시작업
+1.외부로 자료전송
+
+===shell script 작업
+1. 기존 shell 돌리던것 /DATA/APPS_2017/converter_HCI/SH
+2. 빠른 hsr /home/radar/tmp/oskim
+
