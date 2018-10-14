@@ -1,0 +1,35 @@
+=========== geoserver 위치
+/usr/share/geoserver/geoserver-2.13.1/
+cd $GEOSERVER_HOME/bin
+sh ./startup.sh
+
+sh ./shutdown.sh
+
+접속 (Client-Windows)
+http://192.168.56.101:8080/geoserver/index.html	->> 크롬에서만 로긴 되네???
+User name: admin
+Password: geoserver
+
+
+============ postgres (현재 자동 구동상태)
+su 로 root 들어감
+su postgres
+bash-4.2$ psql
+
+shp import
+/usr/bin/shp2pgsql ->> CLI
+/usr/psql-10/bin/shp2pgsql-gui ->> GUI
+
+============ openlayer/ 위치
+/usr/local/openlayer/
+
+
+=========== 구글 키워드
+openlayer + geoserver + postgresql(postgis)
+
+
+1.Install PostGiS
+2.Creating a geodatabase and uploading layers
+3.Install GetServer
+4.Creating a workspace store, styling, publishing
+5.Working with Openlayers
