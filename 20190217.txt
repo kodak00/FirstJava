@@ -1,0 +1,48 @@
+============navi.jsp : 7line
+<style>	
+
+@media only screen and (max-width : 1300px) {
+	.topRight {
+	  float: Left;
+	}
+}
+/* oskim 20190127
+@media only screen and (max-width : 1200px) {
+	.leftArea, .rightArea, .nav-tabs {
+		top: 70px !important;
+	}
+}
+ */
+</style>
+
+
+============bootstrap.css : 2683line
+@media (min-width: 1301px) {	/* oskim 20190127 */
+	.wrap-help{
+		float:right;
+		margin-right:5px;
+	}
+	.topLeft{
+		float:left;
+		/* margin-left:50px; */		
+	}
+	.topRight{
+		float:right;
+	}
+	
+
+}
+@media (max-width: 1300px) {	/* oskim 20190127 */
+	.wrap-help{
+		float:;
+		margin-left:10px;
+	}
+===========memuOpt.js : 19line
+			//oskim 20180327 , 합성/사이트의 산출물 디폴트값 CAPPI 1.5km 지정
+            if($("#tabType").val() == "comp" && checkedTemp == "product1"){
+                selectNum = 0;   //oskim 20181218 , set to default HSR
+            }
+            if($("#tabType").val() == "site" && checkedTemp == "product1"){
+                selectNum = 0;
+            }
+		
