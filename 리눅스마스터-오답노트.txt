@@ -73,3 +73,24 @@ Socket  확인
  -확인 $lsattr /etc/passwd
  -설정 $chattr +i /etc/passwd
  -해제 $chattr -i /etc/passwd
+*SetUID : 사용자 권한이 있어야만 실행 할 수 있을때, 일시적으로 파일 실행하는 사용자들에게 권한 부여
+ -설정 $chmod 4750 exefile (4xxx 형태로, x대신 s표시)
+*SetGID : 사용자 권한이 있어야만 실행 할 수 있을때, 일시적으로 파일 실행하는 사용자들에게 권한 부여
+ -설정 $chmod 2750 exefile (2xxx 형태로, x대신 s표시)
+*Sticky bit : "공유폴더"와 같이 디렉토리에 설정하는 권한 (오직 소유자/root만 삭제 가능)
+ -설정 $chmod 1750 sharefolder (1xxx 형태로, x대신 t표시)
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
