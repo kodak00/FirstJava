@@ -128,39 +128,69 @@ static int fnDataDispCompMultiwind(MULTIWIND **stWind)
     nDiff_Y = (int)((fImgLU_y - fY_Point)/fImgYGridM);
 
 ////////////////////////////////////////////////////////////////////////////////////
+    //oskim 20190304 , for debuf
+    int nStep = 0;
     /* 확대 축소 별 바람장 크기와 바람장 개수 조절 */
     if((g_option.m_fImgGridKm < 0.6) && (g_option.m_fImgGridKm >= 0.3))
     {
         nFreq       = g_option.m_nFrequency;
         nP_Size     = (int)(nP_Size / (g_option.m_fImgGridKm * 2));
         nWingSize   = (int)(nWingSize / (g_option.m_fImgGridKm * 2));
+        nStep = 1;
     }
     else if((g_option.m_fImgGridKm < 0.3) && (g_option.m_fImgGridKm >= 0.05))
     {
         nFreq       = g_option.m_nFrequency / 2;
         nP_Size     = (int)(nP_Size / (g_option.m_fImgGridKm * 4));
         nWingSize   = (int)(nWingSize / (g_option.m_fImgGridKm * 4));
+        nStep = 2;
     }
     else if(g_option.m_fImgGridKm < 0.05)
     {
         nFreq       = g_option.m_nFrequency / 4;
         nP_Size     = (int)(nP_Size / (g_option.m_fImgGridKm * 8));
         nWingSize   = (int)(nWingSize / (g_option.m_fImgGridKm * 8));
+        nStep = 3;
     }
     else    //  기본
     {
-        nFreq       = g_option.m_nFrequency * 2;	//2 origin
+        nFreq       = g_option.m_nFrequency * 2;
         nP_Size     = (int)(nP_Size / g_option.m_fImgGridKm);
         nWingSize   = (int)(nWingSize / g_option.m_fImgGridKm);
     }
 ////////////////////////////////////////////////////////////////////////////////////
 
-    //oskim 20190304 ,
+    //oskim 20190304 , Decimation(filter)
     if(g_option.m_nFormatType == WISSDOM)
-        nFreq = nFreq * 2;
+    {
+        //nFreq = nFreq * 2;
+        if((g_option.m_fImgGridKm < 10.0) && (g_option.m_fImgGridKm >= 9.6))
+            nFreq = 256; //Step 4
+        else if((g_option.m_fImgGridKm < 9.6) && (g_option.m_fImgGridKm >= 4.8))
+            nFreq = 128; //Step 5
+        else if((g_option.m_fImgGridKm < 4.8) && (g_option.m_fImgGridKm >= 2.4))
+            nFreq = 64; //Step 6
+        else if((g_option.m_fImgGridKm < 2.4) && (g_option.m_fImgGridKm >= 1.2))
+            nFreq = 32; //Step 7
+        else if((g_option.m_fImgGridKm < 1.2) && (g_option.m_fImgGridKm >= 0.6))
+            nFreq = 16; //Step 8
+        else if((g_option.m_fImgGridKm < 0.6) && (g_option.m_fImgGridKm >= 0.3))
+            nFreq = 8;  //Step 9
+        else if((g_option.m_fImgGridKm < 0.3) && (g_option.m_fImgGridKm >= 0.15))
+            nFreq = 4;  //Step 10
+        else if((g_option.m_fImgGridKm < 0.15) && (g_option.m_fImgGridKm >= 0.07))
+            nFreq = 2;  //Step 11
+        else if((g_option.m_fImgGridKm < 0.07))
+            nFreq = 1;  //Step 12
+    }
 
-    int x1 = 0, y1 = 0, x2 = 0, y2 = 0, ix = 0, iy = 0;
+    //oskim 20190304 , for debuf
+    char pStringBuf[1024] = {0,};
+    sprintf(pStringBuf, "nFreq:%d, m_fImgGridKm:%f, nP_Size:%d, nWingSize:%d, nStep:%d", \
+            nFreq, g_option.m_fImgGridKm, nP_Size, nWingSize, nStep);
+    fnTextOut(pImg, 10, 4, pStringBuf);
 
+    int ix = 0, iy = 0;
     for(nYIdx = 0; nYIdx < GRID_Y_CNT; nYIdx+=nFreq)
     {
         for(nXIdx = 0; nXIdx < GRID_X_CNT; nXIdx+=nFreq)
@@ -170,14 +200,8 @@ static int fnDataDispCompMultiwind(MULTIWIND **stWind)
                 ws = fnUV_To_S(stWind[nYIdx][nXIdx].u, stWind[nYIdx][nXIdx].v);
                 wd = fnUV_To_D(stWind[nYIdx][nXIdx].u, stWind[nYIdx][nXIdx].v);
 
-				x1 = nResult_X; 
-				y1 = nResult_Y; 
-
                 nResult_Y = (nDiff_Y - ((nYIdx*(fWindGrid_Km*1000.))/fImgYGridM));
                 nResult_X = ((nXIdx*(fWindGrid_Km*1000.))/fImgXGridM) + nDiff_X;
-
-				x2 = nResult_X; 
-				y2 = nResult_Y; 
 
                 if(g_option.m_cUnitFlag == 'W')
                 {
@@ -187,28 +211,41 @@ static int fnDataDispCompMultiwind(MULTIWIND **stWind)
                     //oskim 20190328
                     //fnWind_Draw_New(pImg, nResult_X, nResult_Y, ws, wd, nWindColor, nP_Size, nWingSize);
 
-					//for(ix = x1; x1 > 0 && y1 > 0 && ix <= (x2-1); ix +=100)
-				    //	fnWind_Draw_New(pImg, ix, y2, ws, wd, nWindColor, nP_Size, nWingSize);
-					for(iy = y1; x1 > 0 && y1 > 0 && iy <= (y2-1); iy +=10)
-						fnWind_Draw_New(pImg, x2, iy, ws, wd, nWindColor, nP_Size, nWingSize);
-					/*
-					for(ix = x1; x1 > 0 && y1 > 0 && ix <= (x2-1); ix +=100)
-					{
-							iy = ((y2-y1)/(x2-x1))*(ix-x1) + y1;
-							//for(iy = y1; x1 > 0 && y1 > 0 && iy <= (y2-1); iy +=100)
-							{
-								//ix = ((x2-x1)/(y2-y1))*(iy-y1) + x1;
-								fnWind_Draw_New(pImg, ix, iy, ws, wd, nWindColor, nP_Size, nWingSize);
-							}
-					}
-					*/
-					/*
-					for(iy = y1; x1 > 0 && y1 > 0 && iy <= (y2-1); iy +=100)
-					{
-						ix = ((x2-x1)/(y2-y1))*(iy-y1) + x1;
-						fnWind_Draw_New(pImg, ix, iy, ws, wd, nWindColor, nP_Size, nWingSize);
-					}
-					*/
+                    if(g_option.m_fImgGridKm >= 0.038) 
+                    {
+                        fnWind_Draw_New(pImg, nResult_X, nResult_Y, ws, wd, nWindColor, nP_Size, nWingSize);
+                    }
+                    else
+                    {
+                        nFreq = 32;
+                        //oskim 20190401, interpolation
+                        /*
+                        if((g_option.m_fImgGridKm < 0.038) && (g_option.m_fImgGridKm >= 0.019))
+                            nFreq = 32; //Step 13, 27 ok
+                        if((g_option.m_fImgGridKm < 0.019) && (g_option.m_fImgGridKm >= .0095))
+                            nFreq = 32; //Step 14
+                        if((g_option.m_fImgGridKm < .0095) && (g_option.m_fImgGridKm >= .0047))
+                            nFreq = 32; //Step 15
+                        if((g_option.m_fImgGridKm < .0047) && (g_option.m_fImgGridKm >= .0023))
+                            nFreq = 32; //Step 16
+                        if((g_option.m_fImgGridKm < .0023) && (g_option.m_fImgGridKm >= .0011))
+                            nFreq = 32; //Step 17
+                        if((g_option.m_fImgGridKm < .0011) && (g_option.m_fImgGridKm >= .0005))
+                            nFreq = 32; //Step 18
+                        if((g_option.m_fImgGridKm < .0005) && (g_option.m_fImgGridKm >= .0002))
+                            nFreq = 32; //Step 19
+                        if((g_option.m_fImgGridKm < .0002) && (g_option.m_fImgGridKm >= .0001))
+                            nFreq = 32; //Step 20
+                        */
+
+                        for(ix = nResult_X; ix < (int)(((nXIdx+nFreq)*(fWindGrid_Km*1000.))/fImgXGridM) + nDiff_X; ix += nFreq)
+                        {
+                            for(iy = nResult_Y; iy > (int)(nDiff_Y - (((nYIdx+nFreq)*(fWindGrid_Km*1000.))/fImgYGridM)); iy -= nFreq)
+                            {
+                                fnWind_Draw_New(pImg, ix, iy, ws, wd, nWindColor, nP_Size, nWingSize);
+                            }
+                        }
+                   }
                 }
                 else if(g_option.m_cUnitFlag == 'V')
                 {
@@ -495,8 +532,7 @@ int main(int argc, char** argv)
         fnFreeMatrixFloat(g_pImgData, g_option.m_nImgYdim); \
         fnFreeMatrixFloat(g_pWindData, g_multiwind.m_nWindYdim);
 
-	alarm(60);
-
+    alarm(60);
     fnInitProc();   //g_option, g_multiwind memset
 
     if(fnParamSet() < 0)    //파라미터 분리
@@ -514,7 +550,7 @@ int main(int argc, char** argv)
     }
 
     MAIN_FREE()
-	alarm(0);
+    alarm(0);
     return 0;
 }
 /* ================================================================================ */
