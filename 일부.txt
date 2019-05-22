@@ -1,0 +1,8 @@
+    //oskim 20190519, normalize count by area
+    v = v / area;
+    r = 1;  //r / 10; // for test
+
+    //oskim 20190522 , //ANNUAL #3
+    int nDiffYear = 2018-var.YY;
+    if(nDiffYear > 0)
+        v = v/nDiffYear;   //oskim 20190521, 2018 기준 년평균
