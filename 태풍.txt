@@ -1,0 +1,23 @@
+  /*CREATE TABLE KR_TYPHOON_LIST
+   (	"ID" 	NUMBER(5,0), 
+		"YEAR" 	NUMBER(4,0), 
+		"NAME" 	VARCHAR2(128 BYTE),
+		"INFO" 	VARCHAR2(256 BYTE)
+   )*/
+
+--		SELECT *
+--    	FROM KR_TYPHOON_LIST order by year desc;
+      
+  CREATE TABLE KR_TYPHOON_ROUTE
+   (
+    "ID" 	  NUMBER(5,0), 
+		"LST" 	VARCHAR2(13 BYTE), 
+		"UTC" 	VARCHAR2(13 BYTE),
+		"LAT" 	NUMBER(6,2),
+    "LON" 	NUMBER(6,2),
+    "DIR"   VARCHAR2(4 BYTE),
+    "SPEED" NUMBER(6,2),
+    "MEMO"  VARCHAR2(256 BYTE)
+   );
+   
+   SELECT * FROM KR_TYPHOON_ROUTE where ID = 1 ORDER BY LST ASC ;
