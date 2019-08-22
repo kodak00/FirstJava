@@ -1,25 +1,75 @@
-public class UrlReader
-{
-  public static void main(String[] args) throws Exception
-  {
-    String urlString = "http://localhost:8080/";
-    
-    // create the url
-    URL url = new URL(urlString);
-    
-    // open the url stream, wrap it an a few "readers"
-    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    // write the output to stdout
-    String line;
-    while ((line = reader.readLine()) != null)
-    {
-      System.out.println(line);
-    }
 
-    // close our reader
-    reader.close();
-  }
+public class main {
+
+	  public static void main(String[] args) throws Exception
+	  {
+	 
+		List<List<String>> records = new ArrayList<>();
+		
+	    //String urlString = "http://172.20.134.91/url/typ_lst.php?YY=2012&disp=0&help=0";
+	    String urlString = "http://172.20.134.91/url/typ_data.php?YY=2011&typ=9&seq=8&mode=1&disp=0&help=0";
+	    
+	    // create the url
+	    URL url = new URL(urlString);
+	    
+	    // open the url stream, wrap it an a few "readers"
+	    //BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+	    BufferedReader reader = Files.newBufferedReader(Paths.get("C:\\Temp\\_Temp_\\tr.txt"));
+
+	    String line;
+	    while ((line = reader.readLine()) != null)
+	    {
+	    	//System.out.println(line);
+	        
+	        if(line.indexOf("#") != 0){
+	        	
+	        	//String field = line.substring(64,69);	//(0,4), (4,9), (9,14) (14,19) (19,24) (24,38) (38,50) (50,58) (58,64) (64,69)
+	        	///*
+	        	List<String> tmpList = new ArrayList<String>();
+	        	tmpList.add(line.substring(0,4));
+	        	tmpList.add(line.substring(4,9));
+	        	tmpList.add(line.substring(9,14));
+	        	tmpList.add(line.substring(14,19));
+	        	tmpList.add(line.substring(19,24));
+	        	tmpList.add(line.substring(24,38));
+	        	tmpList.add(line.substring(38,50));
+	        	tmpList.add(line.substring(50,58));
+	        	tmpList.add(line.substring(58,64));
+	        	tmpList.add(line.substring(64,69));
+                System.out.println(tmpList);
+                records.add(tmpList);
+                //*/	        	
+	        	//String field = line.substring(45,64);	//(0,4), (4,9), (9,14) (14,19) (19,32) (32,45) (45,64) (64,85)
+	        	/*
+	        	List<String> tmpList = new ArrayList<String>();
+	        	tmpList.add(line.substring(0,4));
+	        	tmpList.add(line.substring(4,9));
+	        	tmpList.add(line.substring(9,14));
+	        	tmpList.add(line.substring(14,19));
+	        	tmpList.add(line.substring(19,32));
+	        	tmpList.add(line.substring(32,45));
+	        	tmpList.add(line.substring(45,64));
+	        	tmpList.add(line.substring(64,85));
+                System.out.println(tmpList);
+                records.add(tmpList);
+                */
+
+		        //System.out.println(field);		       
+	        }
+	    }	   
+	    // close our reader
+	    reader.close();
+	  }
+		
 }
 
 #START7777
