@@ -23,7 +23,7 @@ public class main {
 	    
 	    // open the url stream, wrap it an a few "readers"
 	    //BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-	    BufferedReader reader = Files.newBufferedReader(Paths.get("C:\\Temp\\_Temp_\\tr.txt"));
+	    BufferedReader reader = Files.newBufferedReader(Paths.get("C:\\Temp\\_Temp_\\tl.txt"));
 
 	    String line;
 	    while ((line = reader.readLine()) != null)
@@ -32,8 +32,9 @@ public class main {
 	        
 	        if(line.indexOf("#") != 0){
 	        	
+	        	//typhoon route
 	        	//String field = line.substring(64,69);	//(0,4), (4,9), (9,14) (14,19) (19,24) (24,38) (38,50) (50,58) (58,64) (64,69)
-	        	///*
+	        	/*
 	        	List<String> tmpList = new ArrayList<String>();
 	        	tmpList.add(line.substring(0,4));
 	        	tmpList.add(line.substring(4,9));
@@ -45,11 +46,13 @@ public class main {
 	        	tmpList.add(line.substring(50,58));
 	        	tmpList.add(line.substring(58,64));
 	        	tmpList.add(line.substring(64,69));
-                System.out.println(tmpList);
+                //System.out.println(tmpList);
                 records.add(tmpList);
                 //*/	        	
+                
+                //typhoon list
 	        	//String field = line.substring(45,64);	//(0,4), (4,9), (9,14) (14,19) (19,32) (32,45) (45,64) (64,85)
-	        	/*
+                ///*
 	        	List<String> tmpList = new ArrayList<String>();
 	        	tmpList.add(line.substring(0,4));
 	        	tmpList.add(line.substring(4,9));
@@ -59,9 +62,20 @@ public class main {
 	        	tmpList.add(line.substring(32,45));
 	        	tmpList.add(line.substring(45,64));
 	        	tmpList.add(line.substring(64,85));
-                System.out.println(tmpList);
+                //System.out.println(tmpList);
                 records.add(tmpList);
-                */
+                //*/
+                
+                for(List<String> newLine : records){
+                    List<String> list = newLine;
+                    for(String data : list){
+                    	data = data.replaceAll("\\s+","");
+                    	System.out.print(data);
+                    	System.out.print(",");
+                    }
+                    //개행코드추가
+                    System.out.print("\n");
+                }
 
 		        //System.out.println(field);		       
 	        }
