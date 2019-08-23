@@ -91,6 +91,31 @@ public class main {
 		
 }
 
+////
+public class UsTyphoonListComisVO {
+	private String			YY		= "";
+	private int			SEQ		= 0;
+	private int 			NOW		= 0;
+	private int 			EFF		= 0;
+	private String			TM_ST	= "";
+	private String			TM_ED	= "";
+	private String 			TYP_NAME= "";
+	private String			TYP_EN	= "";
+////
+	private int			FT		= 0;
+	private int			YY		= 0;
+	private int 			TYP		= 0;
+	private int 			SEQ		= 0;
+	private int			TMD		= 0;
+	private String			TYP_TM	= "";
+	private String 			FT_TM	= "";
+	private float			LAT		= 0;	
+	private float			LON		= 0;
+	private String			DIR		= "";
+	private int			SP		= 0;
+////
+
+
 #START7777
 # FT   YY  TYP  SEQ  TMD TYP_TM(UTC)  FT_TM(UTC)      LAT    LON  DIR   SP   PS   WS  T15  T25  RAD  15D  15R LOC-------------------------------------------------------------------------------------------------
    0 2011    9    1    0 201107280600 201107280600   12.1  135.2    W   22  998   18  200   -9   -9    -   -9 미국 괌 서쪽 약 1060 km 부근 해상                                                                   
