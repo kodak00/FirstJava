@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,8 +25,8 @@ public class main {
 	    URL url = new URL(urlString);
 	    
 	    // open the url stream, wrap it an a few "readers"
-	    //BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-	    BufferedReader reader = Files.newBufferedReader(Paths.get("C:\\Temp\\_Temp_\\tl.txt"));
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "euc-kr"));
+	    //BufferedReader reader = Files.newBufferedReader(Paths.get("C:\\Temp\\_Temp_\\tl.txt"), null);
 
 	    String line;
 	    while ((line = reader.readLine()) != null)
@@ -34,52 +37,54 @@ public class main {
 	        	
 	        	//typhoon route
 	        	//String field = line.substring(64,69);	//(0,4), (4,9), (9,14) (14,19) (19,24) (24,38) (38,50) (50,58) (58,64) (64,69)
-	        	/*
+	        	///*
 	        	List<String> tmpList = new ArrayList<String>();
-	        	tmpList.add(line.substring(0,4));
-	        	tmpList.add(line.substring(4,9));
-	        	tmpList.add(line.substring(9,14));
-	        	tmpList.add(line.substring(14,19));
-	        	tmpList.add(line.substring(19,24));
-	        	tmpList.add(line.substring(24,38));
-	        	tmpList.add(line.substring(38,50));
-	        	tmpList.add(line.substring(50,58));
-	        	tmpList.add(line.substring(58,64));
-	        	tmpList.add(line.substring(64,69));
+	        	tmpList.add(line.substring(0,4));		//FT
+	        	tmpList.add(line.substring(4,9));		//YY
+	        	tmpList.add(line.substring(9,14));		//TYP
+	        	tmpList.add(line.substring(14,19));		//SEQ
+	        	tmpList.add(line.substring(19,24));		//TMD
+	        	tmpList.add(line.substring(24,38));		//TYP_TM
+	        	tmpList.add(line.substring(38,50));		//FT_TM
+	        	tmpList.add(line.substring(50,58));		//LAT
+	        	tmpList.add(line.substring(58,64));		//LON
+	        	tmpList.add(line.substring(64,69));		//DIR
+	        	tmpList.add(line.substring(69,74));		//SP
                 //System.out.println(tmpList);
                 records.add(tmpList);
                 //*/	        	
                 
                 //typhoon list
 	        	//String field = line.substring(45,64);	//(0,4), (4,9), (9,14) (14,19) (19,32) (32,45) (45,64) (64,85)
-                ///*
+                /*
 	        	List<String> tmpList = new ArrayList<String>();
-	        	tmpList.add(line.substring(0,4));
-	        	tmpList.add(line.substring(4,9));
-	        	tmpList.add(line.substring(9,14));
-	        	tmpList.add(line.substring(14,19));
-	        	tmpList.add(line.substring(19,32));
-	        	tmpList.add(line.substring(32,45));
-	        	tmpList.add(line.substring(45,64));
-	        	tmpList.add(line.substring(64,85));
+	        	tmpList.add(line.substring(0,4));		//YY
+	        	tmpList.add(line.substring(4,9));		//SEQ
+	        	tmpList.add(line.substring(9,14));		//NOW
+	        	tmpList.add(line.substring(14,19));		//EFF
+	        	tmpList.add(line.substring(19,32));		//TM_ST
+	        	tmpList.add(line.substring(32,45));		//TM_ED
+	        	tmpList.add(line.substring(45,63));		//TYP_NAME
+	        	tmpList.add(line.substring(63,84));		//TYP_EN
                 //System.out.println(tmpList);
                 records.add(tmpList);
                 //*/
                 
-                for(List<String> newLine : records){
-                    List<String> list = newLine;
-                    for(String data : list){
-                    	data = data.replaceAll("\\s+","");
-                    	System.out.print(data);
-                    	System.out.print(",");
-                    }
-                    //개행코드추가
-                    System.out.print("\n");
-                }
 
 		        //System.out.println(field);		       
 	        }
-	    }	   
+	    }
+	    
+	    for(List<String> newLine : records){
+	    	List<String> list = newLine;
+	    	for(String data : list){
+	    		data = data.replaceAll("\\s+","");
+	    		System.out.print(data);
+	    		System.out.print(",");
+	    	}
+	    	//개행코드추가
+	    	System.out.print("\n");
+	    }
 	    // close our reader
 	    reader.close();
 	  }
