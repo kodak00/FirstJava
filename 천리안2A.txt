@@ -1,3 +1,44 @@
+&D_TYPE=CZ&COMP_MIX=2&IS_SMOOTH=1&DATE=201909141600&LU_LON=58.058529502990204&LU_LAT=47.561410206066846&RL_LON=162.45193261160892&RL_LAT=-3.5676104230592385&IMG_XDIM=984&IMG_YDIM=703&X_DIST=9616619.205714223&Y_DIST=6870409.859366972&UNIT_BAR=0
+&D_TYPE=RN&COMP_MIX=1&IS_SMOOTH=0&DATE=201809271440&LU_LON=129.96834281798246&LU_LAT=38.36030745637132&RL_LON=131.3258241882909&RL_LAT=37.59032400528375&IMG_XDIM=1370&IMG_YDIM=866&X_DIST=120826.63054215&Y_DIST=76376.54164197296&UNIT_BAR=0
+fnGetCompData (szF_name=0x64ab50 <g_option+16> "/DATA/RDR/CMP/201809/27/RDR_CMP_HSR_KMA_201809271440.bin.gz", nDataX
+dim=2304, nDataYdim=2880, nCompMix=1, szDate=0x64af50 <g_option+1040> "201809271440", nCompDsp=1, pStnColor=0x64c030
+)
+125     g_comp.m_fCompLon       = COMP_ORIGIN_LON;
+126     g_comp.m_fCompLat       = COMP_ORIGIN_LAT;
+127     g_comp.m_fCompGridKm    = 2.0;//0.5;
+128     g_comp.m_nCompXdim      = 1950;//1152*2; = COMP_XDIM_240KM
+129     g_comp.m_nCompYdim      = 1550;//1440*2; = COMP_YDIM_240KM
+130     g_comp.m_nCompXo        = 1075;//560*2;
+131     g_comp.m_nCompYo        = 770;//840*2;
+
+szBuff = smatrix(0, COMP_YDIM_240KM, 0, COMP_XDIM_240KM);
+(pCompData = fnGetMatrixFloat(nDataYdim, nDataXdim)
+gzread(pFp, szBuff[nYIdx], (nDataXdim+1)*sizeof(short));
+
+
+
+(gdb) p g_option
+$12 = {m_szP_type = 0x439e8c "PPI", m_szQ_type = 0x439e90 "NOQC", m_szF_name = "/DATA/GK2A/AMI/PRIMARY/L1B/COMPLETE/E
+LA/201909/03/05/gk2a_ami_le1b_ir105_ela020lc_201909030510.nc", '\000' <repeats 926 times>, m_szDate = "201809271440",
+ '\000' <repeats 1011 times>, m_szC_method = 0x439e95 "MAX", m_szComp_method = 77 'M', m_fLU_lon = 78.2851028, m_fLU_
+lat = 46.7265015, m_fRL_lon = 147.955505, m_fRL_lat = 10.1723232, m_nImgXdim = 984, m_nImgYdim = 703, m_fXDist = 9616
+619, m_fYDist = 6870410, m_szUnit = "RN", '\000' <repeats 1021 times>, m_nSmooth = 0, m_nEcho3d = 0, m_nWst = 0, m_nU
+nitBar = 0, m_fImgGridKm = 0, m_nPointRain = 0, m_fPointLon = 0, m_fPointLat = 0, m_nW_Flag = 0, m_lN_Date = 0, m_nCo
+mpMix = 1, m_nCompDsp = 1}
+
+
+
+
+
+gk2a_get (seq=62957908, band=0x60e3c8 <var+8> "ir105", scn=0x60e3d8 <var+24> "ela", gm2=..., g=0x60f3d0, missing=0)
+missing = BOUND_VALUE_F
+(gdb) p gm1
+$3 = {nx = 1949, ny = 1549, sx = 1074.5, sy = 769.5, grid = 2}
+(gdb) p gm2
+$4 = {nx = 800, ny = 800, sx = 400, sy = 500, grid = 2}
+
+
+=======
 1./rdr/src/sat 전체복사
 2./rdr/www/cgi-src/sat 전체복사
 3./rdr/src/ver_v1.1_nc 전체복사
