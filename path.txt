@@ -1,0 +1,8 @@
+#echoTop
+/DATA/RDR/R3D/202002/28/RDR_R3D_KMA_CZ_202002280830.bin.gz
+447836 08:57:30 open("/rdr/REF/MAP/map.ini", O_RDONLY) = 3
+447836 08:57:30 open("/rdr/REF/COLOR/color_rdr_etop.rgb", O_RDONLY) = 3
+447836 08:57:30 open("/rdr/REF/BLN/DFS_mapH5.bln", O_RDONLY) = 3
+#VIL
+/DATA/RDR/R3D/202002/28/RDR_R3D_EXT_CZ_202002280830.bin.gz
+13960 09:07:28 open("/rdr/REF/COLOR/color_rdr_vil.rgb", O_RDONLY) = 3
